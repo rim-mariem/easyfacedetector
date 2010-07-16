@@ -5,6 +5,7 @@ Created on 14.07.2010
 '''
 
 import Image
+from VideoCapture import Device
 
 class PreImage (object):
     '''
@@ -22,8 +23,12 @@ class PreImage (object):
         output_color_space - buffer for grey scale image
                                         
     '''
-    def __init__ (self, input_image_name):
-        self.input_image = Image.open(input_image_name)
+    def __init__ (self):
+        cam = Device()
+        print "\t==== getting image from camera ===="
+        print "\t==== getting image success===="
+        self.input_image_buf = cam.getImage()
+        self.input_image=self.input_image_buf.resize((320,240))
         self.width, self.height = self.input_image.size
         size = self.input_image.size
         self.output_YCbCr_color_space = Image.new("RGB", size)

@@ -5,11 +5,17 @@ Created on 14.07.2010
 '''
 from PreImage import PreImage 
 from SegmImage import SegmImage
+
+
 if __name__ == '__main__':
-    filter = PreImage ("test2.jpg")
-    filter.input_image.show()
+    filter = PreImage ()
     filter.convert('s','YCbCr')
     filter.grey_scale('s','YCbCr')
+   
+    
+
+
+
     
     
    
