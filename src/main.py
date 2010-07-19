@@ -8,10 +8,13 @@ from SegmImage import SegmImage
 
 
 if __name__ == '__main__':
-    filter = PreImage ()
-    filter.convert('s','YCbCr')
-    filter.grey_scale('s','YCbCr')
-   
+    filter = PreImage()
+    filter.convert('','YCbCr')
+    filter.grey_scale('w','YCbCr')
+    # "temp_gr_YCbCr.jpg"
+    filter2 = SegmImage ("temp_gr_YCbCr.jpg",ClaNum=1)
+    filter2.EllipseFitting()
+    
     
 
 

@@ -5,6 +5,7 @@ Created on 14.07.2010
 '''
 
 import Image
+import logging
 from VideoCapture import Device
 
 class PreImage (object):
@@ -28,7 +29,7 @@ class PreImage (object):
         print "\t==== getting image from camera ===="
         print "\t==== getting image success===="
         self.input_image_buf = cam.getImage()
-        self.input_image=self.input_image_buf.resize((320,240))
+        self.input_image=self.input_image_buf.resize((640,480))
         self.width, self.height = self.input_image.size
         size = self.input_image.size
         self.output_YCbCr_color_space = Image.new("RGB", size)
@@ -90,7 +91,7 @@ class PreImage (object):
             convert one pixel from YCbCr to grey skin color model                                   
         '''        
       
-        if ((rgb[1]>90)&(rgb[1]<150))&((rgb[2]>90)&(rgb[2]<150)):
+        if ((rgb[1]>90)&(rgb[1]<155))&((rgb[2]>90)&(rgb[2]<155)):
             grey = 0
         else:
             grey = 255
