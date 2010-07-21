@@ -91,7 +91,7 @@ class PreImage (object):
             convert one pixel from YCbCr to grey skin color model                                   
         '''        
       
-        if ((rgb[1]>90)&(rgb[1]<155))&((rgb[2]>90)&(rgb[2]<155)):
+        if ((rgb[1]>90)&(rgb[1]<160))&((rgb[2]>90)&(rgb[2]<160)):
             grey = 0
         else:
             grey = 255

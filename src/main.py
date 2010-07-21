@@ -11,11 +11,11 @@ if __name__ == '__main__':
     filter = PreImage()
     filter.convert('','YCbCr')
     filter.grey_scale('w','YCbCr')
-    # "temp_gr_YCbCr.jpg"
-    filter2 = SegmImage ("temp_gr_YCbCr.jpg",ClaNum=1)
+    #"temp_gr_YCbCr.jpg"
+    filter2 = SegmImage ("temp_gr_YCbCr.jpg",ClaNum=5)
     filter2.EllipseFitting()
     
-    
+   
 
 
 
