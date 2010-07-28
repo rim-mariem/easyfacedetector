@@ -5,7 +5,7 @@ Created on 14.07.2010
 '''
 
 import Image
-import logging
+
 from VideoCapture import Device
 
 class PreImage (object):
@@ -24,12 +24,9 @@ class PreImage (object):
         output_color_space - buffer for grey scale image
                                         
     '''
-    def __init__ (self):
-        cam = Device()
-        print "\t==== getting image from camera ===="
-        print "\t==== getting image success===="
-        self.input_image_buf = cam.getImage()
-        self.input_image=self.input_image_buf.resize((640,480))
+    def __init__ (self,image):
+        
+        self.input_image = image
         self.width, self.height = self.input_image.size
         size = self.input_image.size
         self.output_YCbCr_color_space = Image.new("RGB", size)
@@ -84,6 +81,13 @@ class PreImage (object):
                     
         hsv[1]=s
         hsv[2]=v
+        
+        i = int(((r+g+b)/3)*255) 
+        
+        if ( (i<80)&(((b-g)<15)|((b-r)<15)) ) |(20<hsv[0]&hsv[0]<=40):
+            hsv[0] = 255
+       
+            
         return hsv 
     #=============================================================
     def YCbCr2GREY (self,rgb):
@@ -115,6 +119,7 @@ class PreImage (object):
         '''
            convert all image from RGB to YCbCr                                 
         '''    
+        print "\t==== Begining convert to YCbCr... ===="
         cbcr = [0,0,0]
         for i in range(self.height):
             for j in range (self.width):
@@ -122,7 +127,7 @@ class PreImage (object):
                 cbcr = self.RGB2YCbCr(rgb)
                 self.output_YCbCr_color_space.putpixel((j,i),tuple(cbcr))
                                 
-                rgb2=self.input_image.getpixel((j,i))
+               
                                        
                 self.YCbCr_to_grey_scale(j,i,cbcr)
                 
@@ -141,6 +146,7 @@ class PreImage (object):
         '''
            convert all image from RGB to HSV                                 
         '''    
+        print "\t==== Begining convert to HSV... ===="
         hsv = [0,0,0]
         for i in range(self.height):
             for j in range (self.width):
@@ -157,10 +163,12 @@ class PreImage (object):
            convert all image from YCbCr to grey skin color model                                   
         '''    
         temp = hue
+        '''
         if temp == 0:
             temp = 255
         else:
             temp = 0
+        '''    
         self.output_HSV_grey_scale.putpixel((x, y),temp)
         
     #===============================================================

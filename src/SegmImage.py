@@ -20,18 +20,22 @@ class SegmImage(object):
             self.intensity = intensity
             
 #==========================================================
-    def __init__(self, filename,ClaNum):
-        self.filename=filename
+    def __init__(self, image ,ClaNum):
+        #self.filename=filename
+        
+        self.image = image
         self.ClaNum=ClaNum
+        self.Clusters = 0
         self.por=0
-        print "Class init ok"
+        print "\t==== class SegmImage init ok ===="
 #==========================================================
     def red_points(self,data, X, Y):
         points = []
         for (r,g,b), n in zip(data, count()):
             d = r-g-b
-            if d != 0:
+            if r==255&g==255&b==255:
                 points.append(self.Point(n % X, n // X, d))
+            
         return points
 #==========================================================
     def UnionClasters(self,points):
@@ -71,8 +75,8 @@ class SegmImage(object):
                     sry = sry + t[a][1]
                     count = count +1
                     temp2[len(temp2):] = [(t[a][0], t[a][1])] 
-            x= srx/count
-            y= sry/count
+            x= int(srx/count)
+            y= int(sry/count)
     
             res.append ([x,y])
     
@@ -81,33 +85,35 @@ class SegmImage(object):
         
         return res
 #==========================================================
-    def EllipseFitting(self):
+    def EllipseFitting(self,mode):
     
-        img = Image.open(self.filename)
-        frames = [img]
+        #img = Image.open(self.filename)
+        frames = [self.image]
                 
-        width, height = img.size
+        width, height = self.image.size
         white = 0
         ful=width*height
         
         for i in range(height):
             for j in range (width):
-                rgb = img.getpixel((j,i))
+                rgb = self.image.getpixel((j,i))
                 if rgb!=0:
                     white=white+1
                     
-        self.por=int((white/ful)*1000)
+        self.por=int((white/ful)*170)
         
-        if self.por<100:
-            self.por = 200
-        elif self.por>400:
-            self.por=400
+        #if self.por<100:
+        #    self.por = 200
+        #elif self.por>400:
+        #    self.por=400
         
-        print "white= ", white
-        print "ful= ", ful 
-        print "persent= ", self.por
+        print "\t==== all pixels = ", ful, " ===="
+        print "\t==== white pixels = ", white, " ===="
+        print "\t==== threshold sensitivity is = ", self.por, " ===="
+         
+        print "\t==== Begining find clusters... ===="
         
-        img = Image.open(self.filename).convert("RGB")
+        img = self.image.convert("RGB")
         frames = [img]             
                      
         
@@ -121,13 +127,13 @@ class SegmImage(object):
                 if len(points) > 0:
                 
                     codebook, distortion = vq.kmeans(points, k_or_guess)
-                    print codebook, distortion 
+                     
                     draw = Draw(im)
                     assert points_to_track == len(codebook)
                     delt=int(distortion)
                     
                     res = self.UnionClasters(codebook)
-                    
+                    self.Clusters = res
                     for p in res:
                         draw.line((p[0]-10, p[1]-10) + (p[0]+10, p[1]+10), fill=(255, 0, 0))
                         draw.line((p[0]-10, p[1]+10) + (p[0]+10, p[1]-10), fill=(255, 0, 0))
@@ -138,6 +144,8 @@ class SegmImage(object):
                 print
         finally:
             
-            frames[0].show()       
+            if mode=='s':
+                frames[0].show()
+                   
    
    
