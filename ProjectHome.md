@@ -1,0 +1,1 @@
+Algorithm is used for the face detection based on skin color model. YCbCr color space is used for skin color model representation. Various methods of image segmentation are used.
